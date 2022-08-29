@@ -17,6 +17,8 @@ $req_type="GET";
 if ($request == 'GET'){
 	header('Content-Type:application/json');
 
+	$data['house'] = "";
+
 	if (isset($_GET['house'])){
 		$data['house']=htmlspecialchars($_GET['house']);
 	}
@@ -49,6 +51,10 @@ elseif ($request == 'POST'){
 	elseif (isset($_POST['update'])){
 		$req_type='PUT';
 	}
+	/*elseif (isset($_POST['search'])){
+		$req_type='GET';
+		$data['house']=htmlspecialchars($_POST['id']);
+	}*/
 
 	//$data = file_get_contents("php://input");		// this can also be used
 

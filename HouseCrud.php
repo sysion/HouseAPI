@@ -20,7 +20,7 @@ class HouseCrud{
 	}
 
 	public function createHouse($house){
-		$data = json_decode($this->db, true);
+		$data = json_decode($this->db, true);		// creates associative array
 		$num_added = 0;
 
 		//get last key in data
@@ -30,7 +30,6 @@ class HouseCrud{
 		$house['id'] = $data_len;
 
 		foreach($data as $key=>$value){
-			//if ($value['id'] == $house['id'] || $value['code'] == $house['code']){
 			if ($value['id'] == $house['id']){
 				return "<h3>House ID already exists in database</h3>";
 				break;
@@ -67,6 +66,10 @@ class HouseCrud{
 	public function getHouse($house_id){
 		$data = json_decode($this->db,true);	// creates associative array
 
+		if (! ctype_digit($house_id)){
+			return "";
+		}
+
 		foreach ($data as $key=>$value){
 			if ($value['id'] == $house_id){
 				//echo "value = {$value[id]}, house_id = {$house_id}";
@@ -78,9 +81,31 @@ class HouseCrud{
 		return "";
 	}
 
-	public function updateHouse($house_id){}
+	public function updateHouse($house){
 
-	public function deleteHouse($house_id){}
+	}
+
+	public function deleteHouse($house_id){
+		$data = json_decode($this->db);		// creates object array instead of associative array
+		$num_del = 0;
+		$obj_key = null;
+
+		foreach($data as $key=>$obj){
+			if ($obj->id == $house_id){
+				unset($data[$key]);
+				$num_del = 1;
+				file_put_contents('houses-data.json', json_encode($data, JSON_UNESCAPED_SLASHES));
+				break;
+			}
+		}
+
+		if ($num_del == 1){
+			return "<h3>one row deleted.</h3>";
+		}
+
+		return "<h3>zero rows deleted.</h3>";			
+	}
+
 }
 
 
