@@ -9,6 +9,18 @@
 	<title>Update House</title>
 
 	<style> 
+		a{
+			text-decoration: none;
+			display: inline-block;
+			text-align: center;
+			width: 80px;
+			font-size: 15px;
+			padding: 10px;
+			margin: 5px;
+			color: #ffffff;
+			border-radius: 10px;
+			background-color: #000000;
+		}
 		label{
 			width: 50px;
 			height: 25px;
@@ -38,6 +50,16 @@
 	</style>
 </head>
 <body> 
+	<table> 
+		<tr> 
+			<td colspan='3'>
+				<a href='admin.html'>admin</a> 
+				<a href='add-data.html'>add</a> 
+				<a href='delete-data.html'>delete</a> 
+			</td> 
+		</tr>
+	</table>
+
 	<form name='search-house' action='http://localhost:8899/index.php' method='post'>
 		<table> 
 			<tr><h3>House Details</h3></tr>

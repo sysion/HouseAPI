@@ -9,6 +9,18 @@
 	<title>Add New House</title>
 
 	<style> 
+		a{
+			text-decoration: none;
+			display: inline-block;
+			text-align: center;
+			width: 80px;
+			font-size: 15px;
+			padding: 10px;
+			margin: 5px;
+			color: #ffffff;
+			border-radius: 10px;
+			background-color: #000000;
+		}
 		label{
 			width: 50px;
 			height: 25px;
@@ -38,6 +50,16 @@
 	</style>
 </head>
 <body> 
+	<table> 
+		<tr> 
+			<td colspan='3'>
+				<a href='admin.html'>admin</a> 
+				<a href='update-data.html'>update</a> 
+				<a href='delete-data.html'>delete</a> 
+			</td> 
+		</tr>
+	</table>
+
 	<form name='add-house' action='http://localhost:8899/index.php' method='post'>
 		<table> 
 			<tr><h3>House Details</h3></tr>
@@ -46,7 +68,7 @@
 			<tr><td><label>address</label><input name='address'/></td></tr>
 			<tr><td><label>agent</label><input name='agent'/></td></tr>
 			<tr><td><label>url</label><input name='url'/></td></tr>
-			<tr><td><button name='submit' type='submit'>submit</button></td></tr>
+			<tr><td><button name='submit' type='submit'>add</button></td></tr>
 		</table>
 	</form>
 </body>

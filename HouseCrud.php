@@ -91,6 +91,10 @@ class HouseCrud{
 			if ($hs != null){
 				//print_r($hs);
 
+				$header = file_get_contents('update_form_header.html');
+				$footer = file_get_contents('update_form_footer.html');
+				
+
 				$form = "<form name='update-house' action='http://localhost:8899/index.php' method='post'>
 							<table> 
 								<tr><h3>House Details</h3></tr>
@@ -103,7 +107,7 @@ class HouseCrud{
 							</table>
 						</form>";
 
-				return $form;
+				return $header.$form.$footer;
 			}
 			else{
 				return "<h3>Cannot update non-existent record.</h3>";
