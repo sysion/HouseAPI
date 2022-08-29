@@ -127,15 +127,17 @@ class HouseCrud{
 
 		foreach($data as $key=>$obj){
 			if ($obj->id == $house_id){
-				unset($data[$key]);
+				unset($data[$key]);	// unset() removes key from array but does not re-index the array 
+				//array_splice(input, offset, num_elem) can also be used to remove key from array without affecting its indexing
 				$num_del = 1;
 
 				/* 
 				 if an index in the middle is removed in this array of objects, json_encode
 				 will encode the resulting array into an OBJECT because of the gap in the
-				 array indexing. JSON can't encode arrays with gaps/holes.
+				 array indexing. JSON can't encode arrays with gaps/holes back into arrays.
 				 To solve this problem, re-index the array using array_values() then try to
 				 encode it again.*/
+				//file_put_contents('houses-data.json', json_encode($data, JSON_UNESCAPED_SLASHES)); // results in object instead of array
 				file_put_contents('houses-data.json', json_encode(array_values($data), JSON_UNESCAPED_SLASHES));
 				break;
 			}
