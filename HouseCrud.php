@@ -36,8 +36,8 @@ class HouseCrud{
 			}
 		}
 
-		// don't add new entry if any field is missing
-		if (($house['code'] != "") && ($house['address'] != "") && ($house['agent'] != "") && ($house['url'] != "")){
+		/*/ don't add new entry if any field is missing
+		if (($house['id'] != "") && ($house['code'] != "") && ($house['address'] != "") && ($house['agent'] != "") && ($house['url'] != "")){
 			//$hs = new House($data_len, $house['code'], $house['address'], $house['agent'], $house['url']);
 			//$hs['id'] = $data_len;
 			//$data[$data_len] = $hs;	// output is empty object {} added to database $data!!! why is this???
@@ -56,7 +56,9 @@ class HouseCrud{
 		}
 		else{
 			return "<h3>Incomplete record, entry not saved !!!</h3>";
-		}
+		}*/
+
+		return $this->saveHouse($house, $data, "added");
 	}
 
 	public function getAllHouses(){
@@ -82,7 +84,40 @@ class HouseCrud{
 	}
 
 	public function updateHouse($house){
+		$hs = null;
 
+		if ($house['id'] && count($house) == 1){
+			$hs = json_decode($this->getHouse($house['id']));
+			if ($hs != null){
+				//print_r($hs);
+
+				$form = "<form name='update-house' action='http://localhost:8899/index.php' method='post'>
+							<table> 
+								<tr><h3>House Details</h3></tr>
+								<tr><td><label>id</label><input name='id' readonly value='".$hs->id."'/></td></tr>
+								<tr><td><label>code</label><input name='code' value='".$hs->code."'/></td></tr>
+								<tr><td><label>address</label><input name='address' value='".$hs->address."'/></td></tr>
+								<tr><td><label>agent</label><input name='agent' value='".$hs->agent."'/></td></tr>
+								<tr><td><label>url</label><input name='url' value='".$hs->url."'/></td></tr>
+								<tr><td><button name='update' type='submit'>update</button></td></tr>
+							</table>
+						</form>";
+
+				return $form;
+			}
+			else{
+				return "<h3>Cannot update non-existent record.</h3>";
+			}
+		}
+		elseif (($house['id'] != "") && ($house['code'] != "") && ($house['address'] != "") && ($house['agent'] != "") && ($house['url'] != "")){
+
+			$house['id'] = intval($house['id']);
+			$this->deleteHouse($house['id']);	// delete existing record
+			$this->db = file_get_contents('houses-data.json');	// reload database
+			$data = json_decode($this->db, true);		// creates associative array
+			return $this->saveHouse($house, $data, "updated");	// save updated record
+		}	
+		
 	}
 
 	public function deleteHouse($house_id){
@@ -94,7 +129,14 @@ class HouseCrud{
 			if ($obj->id == $house_id){
 				unset($data[$key]);
 				$num_del = 1;
-				file_put_contents('houses-data.json', json_encode($data, JSON_UNESCAPED_SLASHES));
+
+				/* 
+				 if an index in the middle is removed in this array of objects, json_encode
+				 will encode the resulting array into an OBJECT because of the gap in the
+				 array indexing. JSON can't encode arrays with gaps/holes.
+				 To solve this problem, re-index the array using array_values() then try to
+				 encode it again.*/
+				file_put_contents('houses-data.json', json_encode(array_values($data), JSON_UNESCAPED_SLASHES));
 				break;
 			}
 		}
@@ -105,6 +147,27 @@ class HouseCrud{
 
 		return "<h3>zero rows deleted.</h3>";			
 	}
+
+	private function saveHouse($house, $db, $action){
+		// don't add new entry if any field is missing
+		if (($house['id'] != "") && ($house['code'] != "") && ($house['address'] != "") && ($house['agent'] != "") && ($house['url'] != "")){
+			array_push($db, $house);	//ok
+			file_put_contents('houses-data.json', json_encode($db, JSON_UNESCAPED_SLASHES));
+			$num_added = 1;
+
+			if ($num_added = 0){
+				return "<h3>zero rows {$action}.</h3>";
+			}
+			elseif ($num_added = 1){
+				return "<h3>one row {$action}.</h3>";
+			}
+		}
+		else{
+			return "<h3>Incomplete record, entry not {$action} !!!</h3>";
+		}
+	}
+
+
 
 }
 

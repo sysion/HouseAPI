@@ -15,8 +15,6 @@ $data=[];
 $req_type="GET";
 
 if ($request == 'GET'){
-	header('Content-Type:application/json');
-
 	$data['house'] = "";
 
 	if (isset($_GET['house'])){
@@ -24,8 +22,6 @@ if ($request == 'GET'){
 	}
 }
 elseif ($request == 'POST'){
-	header('Content-Type: text/html; charset=UTF-8');
-
 	if (isset($_POST['id'])){
 		$data['id'] = $_POST['id'];
 	}
@@ -56,12 +52,21 @@ elseif ($request == 'POST'){
 		$data['house']=htmlspecialchars($_POST['id']);
 	}*/
 
-	//$data = file_get_contents("php://input");		// this can also be used
+	//$data = file_get_contents("php://input");		// this can also be used to get HTTP action type
 
 }
 
 $ac = new ApiController($req_type, $data);
 $result = $ac->router();
-print_r($result);
+
+if ($request == 'GET'){
+	header('Content-Type:application/json');
+	print_r($result);
+}
+elseif ($request == 'POST'){
+	header('Content-Type: text/html; charset=UTF-8');
+	echo $result;
+}
+
 
 ?>

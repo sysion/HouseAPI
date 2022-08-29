@@ -36,7 +36,7 @@ class ApiController{
 				return $this->hc->createHouse($this->data);
 				break;
 			case 'PUT':
-				return $this->hc->updateHouse($this->data['id']);
+				return $this->hc->updateHouse($this->data);
 				break;
 			case 'DELETE':
 				return $this->hc->deleteHouse($this->data['id']);
