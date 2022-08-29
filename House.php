@@ -10,11 +10,11 @@
  * "agent":"Peju Adams",
  * "url":"https://127.0.0.1:12345/api/houses/house-01.jpg"
  *
- * @param $id integer
- * @param $code string
- * @param $address string
- * @param $agent string
- * @param $url string
+ * @param $id      -> integer
+ * @param $code    -> string
+ * @param $address -> string
+ * @param $agent   -> string
+ * @param $url     -> string
  *
  */
 
