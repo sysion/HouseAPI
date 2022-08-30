@@ -7,6 +7,9 @@
  *
  */
 
+header("Access-Control-Allow-Origin: *");
+
+
 require_once('ApiController.php');
 
 $request = $_SERVER['REQUEST_METHOD'];
