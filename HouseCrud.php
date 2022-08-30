@@ -9,6 +9,9 @@
  *
  */
 
+header("Access-Control-Allow-Origin: *");
+
+
 require_once('House.php');
 
 class HouseCrud{
