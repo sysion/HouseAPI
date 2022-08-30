@@ -6,7 +6,6 @@
  *
  * Handles Create, Read, Update and Delete actions of API
  *
- * @param $db -> json database file
  *
  */
 
@@ -36,28 +35,6 @@ class HouseCrud{
 			}
 		}
 
-		/*/ don't add new entry if any field is missing
-		if (($house['id'] != "") && ($house['code'] != "") && ($house['address'] != "") && ($house['agent'] != "") && ($house['url'] != "")){
-			//$hs = new House($data_len, $house['code'], $house['address'], $house['agent'], $house['url']);
-			//$hs['id'] = $data_len;
-			//$data[$data_len] = $hs;	// output is empty object {} added to database $data!!! why is this???
-
-			//$data[$data_len] = $house;	//ok
-			array_push($data, $house);	//ok
-			file_put_contents('houses-data.json', json_encode($data, JSON_UNESCAPED_SLASHES));
-			$num_added = 1;
-
-			if ($num_added = 0){
-				return "<h3>zero rows added.</h3>";
-			}
-			elseif ($num_added = 1){
-				return "<h3>one row added.</h3>";
-			}
-		}
-		else{
-			return "<h3>Incomplete record, entry not saved !!!</h3>";
-		}*/
-
 		return $this->saveHouse($house, $data, "added");
 	}
 
@@ -74,12 +51,11 @@ class HouseCrud{
 
 		foreach ($data as $key=>$value){
 			if ($value['id'] == $house_id){
-				//echo "value = {$value[id]}, house_id = {$house_id}";
 				return json_encode($value);
 				break;
 			}
 		}
-		//return [{"not found": "Requested data not present in database"}];	// try to return json formatted output
+
 		return "";
 	}
 
@@ -89,7 +65,6 @@ class HouseCrud{
 		if ($house['id'] && count($house) == 1){
 			$hs = json_decode($this->getHouse($house['id']));
 			if ($hs != null){
-				//print_r($hs);
 
 				$header = file_get_contents('update_form_header.html');
 				$footer = file_get_contents('update_form_footer.html');
@@ -132,16 +107,8 @@ class HouseCrud{
 		foreach($data as $key=>$obj){
 			if ($obj->id == $house_id){
 				unset($data[$key]);	// unset() removes key from array but does not re-index the array 
-				//array_splice(input, offset, num_elem) can also be used to remove key from array without affecting its indexing
 				$num_del = 1;
 
-				/* 
-				 if an index in the middle is removed in this array of objects, json_encode
-				 will encode the resulting array into an OBJECT because of the gap in the
-				 array indexing. JSON can't encode arrays with gaps/holes back into arrays.
-				 To solve this problem, re-index the array using array_values() then try to
-				 encode it again.*/
-				//file_put_contents('houses-data.json', json_encode($data, JSON_UNESCAPED_SLASHES)); // results in object instead of array
 				file_put_contents('houses-data.json', json_encode(array_values($data), JSON_UNESCAPED_SLASHES));
 				break;
 			}

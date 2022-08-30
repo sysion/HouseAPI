@@ -5,7 +5,8 @@
  *
  * Directs all queries from index.php to appropriate actions in HouseCrud.php
  * 
- * @param $query -> query string
+ * @param $req  -> string
+ * @param $data -> array
  *
  */
 
