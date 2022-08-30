@@ -10,8 +10,6 @@
  *
  */
 
-header("Access-Control-Allow-Origin: *");
-
 
 require_once('HouseCrud.php');
 
